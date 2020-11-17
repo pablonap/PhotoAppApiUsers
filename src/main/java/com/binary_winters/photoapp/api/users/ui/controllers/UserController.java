@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
 
 import com.binary_winters.photoapp.api.users.service.UsersService;
 import com.binary_winters.photoapp.api.users.shared.UserDto;
@@ -34,7 +35,10 @@ public class UserController {
 		return "Working on port " + env.getProperty("local.server.port");
 	}
 	
-	@PostMapping
+	@PostMapping(
+			consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE },
+			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }
+			)
 	public ResponseEntity<CreateUserResponseModel> createUser(@Valid @RequestBody CreateUserRequestModel userDetails) {
 		
 		ModelMapper modelMapper = new ModelMapper();
