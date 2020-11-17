@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.binary_winters.photoapp.api.users.service.UsersService;
 import com.binary_winters.photoapp.api.users.shared.UserDto;
 import com.binary_winters.photoapp.api.users.ui.model.CreateUserRequestModel;
+import com.binary_winters.photoapp.api.users.ui.model.CreateUserResponseModel;
 
 @RestController
 @RequestMapping("/users")
@@ -34,16 +35,18 @@ public class UserController {
 	}
 	
 	@PostMapping
-	public ResponseEntity createUser(@Valid @RequestBody CreateUserRequestModel userDetails) {
+	public ResponseEntity<CreateUserResponseModel> createUser(@Valid @RequestBody CreateUserRequestModel userDetails) {
 		
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
 		UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 		
-		usersService.createUser(userDto);
+		UserDto createdUser = usersService.createUser(userDto);
+		
+		CreateUserResponseModel returnValue = modelMapper.map(createdUser, CreateUserResponseModel.class);
 
-		return new ResponseEntity(HttpStatus.CREATED);
+		return ResponseEntity.status(HttpStatus.CREATED).body(returnValue);
 	}
 
 }
