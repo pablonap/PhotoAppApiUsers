@@ -1,8 +1,10 @@
 package com.binary_winters.photoapp.api.users.service;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 import com.binary_winters.photoapp.api.users.shared.UserDto;
 
-public interface UsersService {
+public interface UsersService extends UserDetailsService {
 	
 	UserDto createUser(UserDto userDetails);
 
