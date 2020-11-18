@@ -60,4 +60,15 @@ public class UsersServiceImpl implements UsersService {
 		return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), true, true, true, true, new ArrayList<>());
 	}
 
+	@Override
+//	I need this method because from AuthenticationFilter I need the user ID for building the token.
+	public UserDto getUserDetailsByEmail(String email) {
+		
+		UserEntity userEntity = usersRepository.findByEmail(email);
+		
+		if(userEntity == null) throw new UsernameNotFoundException(email);
+		
+		return new ModelMapper().map(userEntity, UserDto.class);
+	}
+
 }
